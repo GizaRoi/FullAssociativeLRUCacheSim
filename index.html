@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cache Simulators</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- insert js link to main.js-->
+    <script src="main.js"></script>
+</head>
+<body>
+
+    <div class="title-container">
+        <h1>Cache Simulator</h1>
+    </div>
+
+    <div class="side-container">
+
+    <form id="simulator-form">
+
+        <h3>Write Mode</h3>
+        <h4>Cache Hit</h4>
+        <div class="radio-container">
+            <label class="radio-opt">
+                <input id="writeBack" type="radio" name="writeBack" onchange="handleRadioChange3(this)" value="" checked="">
+                Write Back
+            </label>
+            <label class="radio-opt" >
+                <input id="writeThrough" type="radio" name="writeThrough" onchange="handleRadioChange3(this)" value="">
+                Write Through
+            </label>
+            </label>
+        </div>
+        <h4>Cache Miss</h4>
+        <div class="radio-container">
+            <label class="radio-opt">
+                <input id="writeOnAllocate" type="radio" name="writeOnAllocate" onchange="handleRadioChange4(this)" value="" checked="">
+                Write On Allocate
+            </label>
+            <label class="radio-opt">
+                <input id="writeAround" type="radio" name="writeAround" onchange="handleRadioChange4(this)" value="">
+                Write Around
+            </label>
+        </div>
+
+        <!------------------ INPUT VALUES ------------------------------->
+        <h3>Settings</h3>
+        <div class="input-container">
+            <!--- Determines number of words/block --->
+            <label class="in-labels" for="cacheTime">Cache Access Time (ns)</label>
+            <input type="number" id="cacheTime" name="cacheTime" required><br> 
+        </div>
+
+        <div class="input-container">
+            <!--- Determines number of words/block --->
+            <label class="in-labels" for="mmTime">Memory Access Time (ns)</label>
+            <input type="number" id="mmTime" name="mmTime" required><br>
+        </div>
+
+        <div class="input-container">
+            <!--- Determines number of words/block --->
+            <label class="in-labels" for="blockSize">Block Size</label>
+            <input type="number" id="blockSize" name="blockSize" required><br>
+        </div>
+
+        <div class="input-container">
+            <!--- Determines number of words/block --->
+            <label class="in-labels" for="mmSize">Main Memory Size
+                <font size="-4">(Block or Word)</font>
+            </label>
+            <div class="radio-container">
+                <label class="radio-opt">
+                    <input id="Block1" type="radio" name="Block1" onchange="handleRadioChange(this)" value="true" checked="">
+                    Block
+                </label>
+                <label class="radio-opt">
+                    <input id="Word1" type="radio" name="Word1" onchange="handleRadioChange(this)" value="">
+                    Word
+                </label>
+            </div>
+            <input type="number" id="mmSize" name="mmSize" required><br>
+        </div>
+
+
+        <div class="input-container">
+            <!--- Insert here radio option for block or word for Cache Size --->
+            <label class="in-labels" for="cacheSize">Cache Size
+                <font size="-4">(Block or Word)</font>
+            </label>
+            <div class="radio-container">
+                <label class="radio-opt">
+                    <input id="Block2" type="radio" name="Block2" onchange="handleRadioChange2(this)" value="true" checked="">
+                    Block
+                </label>
+                <label class="radio-opt">
+                    <input id="Word2" type="radio" name="Word2" onchange="handleRadioChange2(this)" value="">
+                    Word
+                </label>
+            </div>
+            <input type="number" id="cacheSize" name="cacheSize" required><br>
+        </div>
+
+        <!-------------------------- Program Flow Instruction ------------------------------------->
+        <h3>Instructions</h3>
+        <div class="flow-container">
+            <label class="flow-labels" for="programFlow">Program Flow
+                <font size="-4">(comma-separated addresses)</font>
+            </label>
+            <input type="text" id="programFlow" name="programFlow" placeholder="List of instructions" required><br>
+        </div>
+        <br>
+
+        <button type="button" id="runSimulationButton">Run Simulation</button>
+
+    </form>
+
+    </div> <!------------------------------------- end of side container -------------------------------------->
+
+    <div class="output-container">
+
+        <div class="output-title">
+            <h1 id="out-title">Full Associative Cache</h1>
+            <font id="bot-text" size="5">Least Recently Used</font>
+        </div>
+
+        <h3>Statistics:</h3>
+
+        <div class="in-out-container">
+            <label class="out-labels">Cache Hits:</label>
+            <label id="cacheHitStat">0%</label>
+        </div>
+
+        <div class="in-out-container">
+            <label class="out-labels">Cache Miss:</label>
+            <label id="cacheMissStat">0%</label>
+        </div>
+
+        <div class="in-out-container">
+            <label class="out-labels">Miss Penalty:</label>
+            <label id="missPenaltyStat">0%</label>
+        </div>
+        
+        <div class="in-out-container">
+            <label class="out-labels">Avg. Memory Access Time:</label>
+            <label id="avgMemTimeStat">0 ns</label>
+        </div>
+            
+        <div class="in-out-container">
+            <label class="out-labels">Total Memory Access Time:</label>
+            <label id="totalMemTimeStat">0 ns</label>
+        </div>
+
+        <div id="download-container"></div>
+            
+        <div class="snapshot-container">
+            <div class="snapshot-title">
+                <h1 id="snap-title">Cache Snapshot</h1>
+            </div>
+            <div class="snapshot-output">
+                
+                
+            </div>
+        </div>
+
+        <div class = "image-results" id = "results">
+            <table id = "resultsTable">
+                <tr>
+                    <th>Block</th> <th>Age</th> <th>Data</th>
+                </tr>
+                <div class = "row-results" id = "data">
+                    <tr>
+                        <td>0</td> <!--BLOCK-->
+                        <td>1</td>  <!--AGE-->
+                        <td>2a5</td>    <!--DATA-->
+                    </tr>
+                </div>
+              </table> 
+        </div>
+
+    </div> <!-- end of output container -->
+    
+
+    <script src="main.js"></script>
+
+</body>
+</html>
